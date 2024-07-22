@@ -1,11 +1,11 @@
-import express from "express"
+import express from "express";
+import verifyUser from "../middleware/verifyUser.js";
+import { getMessages, getUsersForSidebar, sendMessage } from "../controllers/message.controller.js";
+const router = express.Router();
 
-const router=express.Router();
+router.get("/conversations", verifyUser, getUsersForSidebar);
+router.get("/:id", verifyUser, getMessages);
+router.post("/send/:id", verifyUser, sendMessage);
 
-router.get("/convos",(req,res)=>{
-    res.send("Message sent");
-} )
-
-export default router
-
+export default router;
 

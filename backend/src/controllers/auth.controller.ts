@@ -1,7 +1,8 @@
-import e, { Request, Response } from "express"
+import { Request, Response } from "express"
 import prisma from "../../db/prisma.js"
 import bcryptjs from "bcryptjs"
 import generateToken from "../utils/tokenMiddleware.js";
+import jwt from "jsonwebtoken"
 
 export const signup=async(req:Request, res:Response, next:any)=>{
     try{
@@ -40,7 +41,17 @@ export const signup=async(req:Request, res:Response, next:any)=>{
         
         if(newUser){
 
-            generateToken(newUser.id,res)
+            const token=jwt.sign({id:newUser.id},process.env.SECRET_KEY!,{
+        expiresIn:'1h'
+    })
+
+    res.cookie("jwt",token,{
+        httpOnly:true,
+		secure:true,
+        maxAge:60*60*1000,
+        sameSite:"none",
+        // secure:process.env.NODE_ENV!=="development"
+    })
             
             res.status(201).json({
                 id:newUser.id,
@@ -76,7 +87,18 @@ export const login = async (req: Request, res: Response) => {
 			return res.status(400).json({ error: "Invalid credentials" });
 		}
 
-		generateToken(user.id, res);
+		const token=jwt.sign({id:user.id},process.env.SECRET_KEY!,{
+			expiresIn:'1h'
+		})
+	
+		res.cookie("jwt",token,{
+			httpOnly:true,
+			secure:true,
+			maxAge:60*60*1000,
+			sameSite:"none",
+			
+		})
+		
 
 		res.status(200).json({
 			id: user.id,

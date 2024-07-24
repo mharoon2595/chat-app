@@ -17,7 +17,7 @@ export const useSocketContext = (): ISocketContext => {
 	return context;
 };
 
-const socketURL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
+const socketURL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
 const SocketContextProvider = ({ children }: { children: ReactNode }) => {
 	const socketRef = useRef<Socket | null>(null);

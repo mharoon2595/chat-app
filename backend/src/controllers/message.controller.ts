@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../../db/prisma.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 
 export const sendMessage = async (req: Request, res: Response) => {
@@ -48,6 +49,11 @@ export const sendMessage = async (req: Request, res: Response) => {
 				},
 			});
 		}
+		const receiverSocketId = getReceiverSocketId(receiverId);
+
+		if (receiverSocketId) {
+			io.to(receiverSocketId).emit("newMessage", newMessage);
+		}
 
 		res.status(201).json(newMessage);
 	} catch (error: any) {
@@ -89,8 +95,10 @@ export const getMessages = async (req: Request, res: Response) => {
 };
 
 export const getUsersForSidebar = async (req: Request, res: Response) => {
+	console.log("hittinggg")
 	try {
 		const authUserId = req.user.id;
+		console.log("authUserid--------->",authUserId)
 
 		const users = await prisma.user.findMany({
 			where: {

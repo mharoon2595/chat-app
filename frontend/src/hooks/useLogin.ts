@@ -9,13 +9,15 @@ const useLogin = () => {
 	const login = async (username: string, password: string) => {
 		try {
 			setLoading(true);
-			const res = await fetch("/api/auth/login", {
+			const res = await fetch("http://localhost:3000/api/auth/login", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
+				credentials: "include",
 				body: JSON.stringify({ username, password }),
 			});
 
 			const data = await res.json();
+			console.log(data)
 
 			if (!res.ok) throw new Error(data.error);
 			setAuthUser(data);

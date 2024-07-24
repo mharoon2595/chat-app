@@ -10,10 +10,10 @@ const generateToken=(uid: String, res:Response)=>{
     res.cookie("jwt",token,{
         httpOnly:true,
         maxAge:60*60*1000,
-        sameSite:"strict",
-        secure:process.env.NODE_ENV!=="development"
+        sameSite:"none",
+        // secure:process.env.NODE_ENV!=="development"
     })
-
+    
     return token
 }
 

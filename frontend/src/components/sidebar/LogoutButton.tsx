@@ -1,16 +1,13 @@
-import useGetConversations from "../../hooks/useGetConversations";
-import { getRandomEmoji } from "../../utils/emojis";
-import Conversation from "./Conversation";
+import { LogOut } from "lucide-react";
+import useLogout from "../../hooks/useLogout";
 
-const Conversations = () => {
-	const { conversations, loading } = useGetConversations();
+const LogoutButton = () => {
+	const { logout } = useLogout();
+
 	return (
-		<div className='py-2 flex flex-col overflow-auto'>
-			{conversations.map((conversation) => (
-				<Conversation key={conversation.id} conversation={conversation} emoji={getRandomEmoji()} />
-			))}
-			{loading ? <span className='loading loading-spinner mx-auto' /> : null}
+		<div className='mt-auto'>
+			<LogOut className='w-6 h-6 text-white cursor-pointer' onClick={logout} />
 		</div>
 	);
 };
-export default Conversations;
+export default LogoutButton;

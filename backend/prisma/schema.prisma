@@ -16,7 +16,7 @@ datasource db {
 model User {
   id               String   @id @default(cuid())
   username         String   @unique
-  fullname         String
+  fullName         String
   password         String
   gender           Gender
   profilePic       String
@@ -53,7 +53,7 @@ model Message {
 }
 
 enum Gender {
-  Male
-  Female
-  Undisclosed
+  male
+  female
+  undisclosed
 }

@@ -9,8 +9,9 @@ const useLogout = () => {
 	const logout = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch("/api/auth/logout", {
+			const res = await fetch("http://localhost:3000/api/auth/logout", {
 				method: "POST",
+				credentials:'include'
 			});
 			const data = await res.json();
 			if (!res.ok) {

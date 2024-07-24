@@ -32,7 +32,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
-        const res = await fetch("/api/auth/me");
+        const res = await fetch("http://localhost:3000/api/auth/me",{
+          credentials:'include'
+        });
         const data: AuthUserType = await res.json();
         if (!res.ok) {
           throw new Error(data.error || 'Failed to fetch user data');

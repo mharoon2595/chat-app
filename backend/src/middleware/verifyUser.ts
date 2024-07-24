@@ -18,17 +18,18 @@ export interface Request{
 
 const verifyUser=async(req:Request, res:Response, next:NextFunction)=>{
     try{
-        const token=req.cookies.jwt;
+        const token=req.cookies?.jwt;
+        console.log(req.cookies)
         if(!token){
-            return res.status(401).json({error:"Not authortized."})
+            return res.status(401).json({error:"Not authorized."})
         }
         const validateUser=jwt.verify(token,process.env.SECRET_KEY!) as DecodedToken
 
         if(!validateUser){
-            return res.status(401).json({error:"Not authortized."})
+            return res.status(401).json({error:"Not authorized."})
         }
-
-        const user=await prisma.user.findUnique({where:{id:validateUser.uid}, select:{id:true, username:true, fullname:true}})
+  console.log("validate user--->", validateUser)
+        const user=await prisma.user.findUnique({where:{id:validateUser.id}, select:{id:true, username:true, fullName:true}})
 
         if(!user){
             return res.status(404).json({error:"User not found"})

@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
 import { Request,Response, NextFunction } from "express";
+import { fileURLToPath } from 'url';
 import cors from "cors"
 import path from "path";
 import { app, server } from "./socket/socket.js";
@@ -34,7 +35,7 @@ app.use((error:any, req:Request, res:Response, next:NextFunction) => {
     .status(error.code || 500)
     .json({ message: error.message || "An unknown error occured" });
 });
-
+const __dirname = path.resolve();
 if (process.env.NODE_ENV !== "development") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
 	app.get("*", (req, res) => {
